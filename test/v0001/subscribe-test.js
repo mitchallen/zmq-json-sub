@@ -54,7 +54,7 @@ describe('subscribe suite ' + config.versionLabel, function () {
             done();
         }, config.doneTimeout);
     });
-    it('should not receive to message with no body', function (done) {
+    it('should not receive message with no body', function (done) {
         let result = pub.send();
         result.should.eql(false);
         setTimeout(function () {
