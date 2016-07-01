@@ -13,6 +13,6 @@ config.versionLabel = " [" + config.logVersion + "]"; // Used in test labels.
 
 config.doneTimeout = 500;
 
-config.verbose = true;
+config.verbose = true; 
 
 module.exports = config;

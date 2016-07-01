@@ -33,8 +33,10 @@ ZmqJsonSub.prototype.subscribe = function (spec) {
     var filter = spec.filter || "";
     this.subscriber.subscribe(filter);
     this.subscriber.on("message", spec.function);
-    // Example: tcp://localhost:5432
-    console.log("subscribing on: " + spec.endpoint);
+    if (this.verbose) {
+        // Example: tcp://localhost:5432
+        console.log("subscribing on: " + spec.endpoint);
+    }
     this.subscriber.connect(spec.endpoint);
     return true;
 };

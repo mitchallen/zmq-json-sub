@@ -14,36 +14,37 @@ var request = require('supertest'),
     subscriber = config.subscriber,
     pub = null,
     sub = null,
-    lastType = null,
-    lastMessage = null;
+    lastMessage = null,
+    lastTime = null;
 
 describe('subscribe suite ' + config.versionLabel, function () {
     before(function () {
         pub = new ZmqJsonPub();
         pub.publish(publisher.endpoint);
+        pub.verbose = config.verbose;
         sub = new ZmqJsonSub({
             endpoint: subscriber.endpoint, 
             filter: "", 
             function: function (data) {
+                let jstring = JSON.parse(data);
                 if (config.verbose) {
                     console.log("DATA: " + data);
+                    var date = new Date(jstring.timestamp);
+                    console.log("DATE STAMP: " + date);
                 }
-                let jstring = JSON.parse(data);
-                lastMessage = jstring.message
-                // var date = new Date(jstring.timestamp);
-                // console.log("DATE STAMP: " + date);
-                // console.log("MESSAGE: " + JSON.stringify(jstring));
+                lastMessage = jstring.message;
+                lastTime = jstring.timestamp;
             }
         });
         sub.verbose = config.verbose;
     });
     beforeEach(function() {
-        lastType = null;
         lastMessage = null;
+        lastTime = null;
     })
-    it('should subscribe to message', function (done) {
+    it('should subscribe and receive a message', function (done) {
         let data = {
-            message: 'message from ok 1',
+            message: 'this is a message',
             timestamp: Date.now()
         }
         let result = pub.send(data);
@@ -51,14 +52,15 @@ describe('subscribe suite ' + config.versionLabel, function () {
         setTimeout(function () {
             should.exist(lastMessage);
             lastMessage.should.eql(data.message);
+            should.exist(lastTime);
+            lastTime.should.eql(data.timestamp);
             done();
         }, config.doneTimeout);
     });
-    it('should not receive message with no body', function (done) {
+    it('should not receive a message with no body', function (done) {
         let result = pub.send();
         result.should.eql(false);
         setTimeout(function () {
-            should.not.exist(lastType);
             should.not.exist(lastMessage);
             done();
         }, config.doneTimeout);
