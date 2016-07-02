@@ -7,7 +7,7 @@ var request = require('supertest'),
     sleep = require('sleep'),
     config = require('./test-config'),
     // TODO - this is very bad - use link
-    ZmqJsonPub = require('../../../zmq-json-pub/zmq-json-pub'),
+    ZmqJsonPub = require('zmq-json-pub'),
     ZmqJsonSub = require('../../zmq-json-sub'),
     service = config.service,
     publisher = config.publisher,

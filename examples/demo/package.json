@@ -1,0 +1,14 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "demo file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+   "author": "Mitch Allen <npm@mitchallen.com> (http://mitchallen.com)",
+  "license": "ISC",
+  "dependencies": {
+    "zmq-json-pub": "^0.1.1"
+  }
+}
