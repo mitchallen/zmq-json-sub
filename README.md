@@ -25,7 +25,7 @@ To verify the installation
 
 The complete example can be found in the __examples/demo__ folder.
 
-This example shows how to create a simple app that subcribes to a JSON messages from a publisher.   
+This example shows how to create a simple app that subcribes to JSON messages from a publisher.   
 
 File: __examples/demo/config.js__
 
@@ -139,6 +139,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.1 release notes
+
+* Updated demo to use live module
 
 #### Version 0.1.0 release notes
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var ZmqJsonSub = require('../../zmq-json-sub'),
+var ZmqJsonSub = require('zmq-json-sub'),
     config = require('./config'),
     sub = null;
 
