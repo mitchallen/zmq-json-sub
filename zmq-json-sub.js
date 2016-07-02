@@ -6,39 +6,34 @@ Auhor: Mitch Allen
 
 var zmq = require('zmq');
 
-function ZmqJsonSub(spec) {
+function ZmqJsonSub(spec, callback) {
     this.name    = require("./package").name;
     this.version = require("./package").version;
-    this.subscribe(spec);
+    this.subscribe(spec, callback);
 }
 
 module.exports = ZmqJsonSub;
 
-ZmqJsonSub.prototype.verbose = false;
-
-ZmqJsonSub.prototype.subscribe = function (spec) {
-    if (!spec.endpoint) {
-        if (this.verbose) {
-            console.error("ERROR: subscribe path not defined");
+ZmqJsonSub.prototype.subscribe = function (spec, callback) {
+    if (callback && typeof callback === "function") {
+        if (!spec) {
+            callback(new Error("subscribe called with no arguments"));
+            return;
         }
-        return false;
-    }
-    if (!spec.function) {
-        if (this.verbose) {
-            console.error("ERROR: subscribe function not defined");
+        if (!spec.endpoint) {
+            callback(new Error("subscribe endpoint not defined"));
+            return;
         }
-        return false;
+        if (!spec.onMessage) {
+            callback(new Error("subscribe onMessage function not defined"));
+            return;
+        }
     }
     this.subscriber = zmq.socket('sub');
     var filter = spec.filter || "";
     this.subscriber.subscribe(filter);
-    this.subscriber.on("message", spec.function);
-    if (this.verbose) {
-        // Example: tcp://localhost:5432
-        console.log("subscribing on: " + spec.endpoint);
-    }
+    this.subscriber.on("message", spec.onMessage);
     this.subscriber.connect(spec.endpoint);
-    return true;
 };
 
 ZmqJsonSub.prototype.close = function () {
