@@ -47,8 +47,7 @@ describe('subscribe suite ' + config.versionLabel, function () {
             message: 'this is a message',
             timestamp: Date.now()
         }
-        let result = pub.send(data);
-        result.should.eql(true);
+        pub.send(data);
         setTimeout(function () {
             should.exist(lastMessage);
             lastMessage.should.eql(data.message);
@@ -58,8 +57,19 @@ describe('subscribe suite ' + config.versionLabel, function () {
         }, config.doneTimeout);
     });
     it('should not receive a message with no body', function (done) {
-        let result = pub.send();
-        result.should.eql(false);
+        pub.send();
+        setTimeout(function () {
+            should.not.exist(lastMessage);
+            done();
+        }, config.doneTimeout);
+    });
+    it('should not receive a message with null body and error callback', function (done) {
+        var errCalled = false;
+        pub.send(null, function(err) {
+            errCalled = true;
+            console.log(err);
+        });
+        errCalled.should.eql(true);
         setTimeout(function () {
             should.not.exist(lastMessage);
             done();
